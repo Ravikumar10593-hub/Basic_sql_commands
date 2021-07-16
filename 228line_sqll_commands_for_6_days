@@ -1,0 +1,237 @@
+
+Day-1
+
+--creating table using the command below 
+create table customer_list(
+	id int primary key,
+	name text not null,
+	email text not null
+	);
+		
+--Inserting the data inside the table
+
+insert into customer_list values(
+1,'john smith','john@gmail.com'
+);
+
+--seeing the data is successfully inserted or not
+select * from customer_list;
+
+
+Day-2
+
+
+CREATE TABLE refinery_clients (
+ refiner_name TEXT NOT NULL,
+ units_sold INT NOT NULL,
+ status_sent TEXT NULL,
+ sale_id INT NOT NULL
+);
+
+INSERT INTO refinery_clients VALUES
+ ('Big Refine Co.', 10000,'true', '1001'),
+    ('Petrol Maker LLC.', 4500,'false', '1002'),
+    ('Gasoline Factory Inc.', 20000,'true', '1003'),
+ ('Jackson & Family', 3200,'true', 1004),
+ ('Clear Prep LLC.', 13400,'', 1005),
+ ('Titanium Refineries Inc.', 50000,'', 1006),
+ ('Fake Oil Company', 0,'true', 1007)
+;
+
+
+CREATE TABLE distribution_channels (
+ dis_name TEXT NOT NULL,
+ status_received TEXT NULL,
+ sale_id INT NOT NULL
+);
+
+INSERT INTO distribution_channels VALUES
+ ('Gas n Go','false', 1002),
+    ('Gasoline LLC.','true', 1001),
+    ('Quick Gas','true', 1003),
+ ('Pit Stop','true', 1004),
+ ('Real Energy','', 1005),
+ ('Car Station Co.','', 1006)
+;
+
+
+select * from distribution_channels;
+
+select * from refinery_clients;
+
+--in refinery clients table update units_sold 10,000 as 9,000
+update refinery_clients set units_sold= 9000
+where sale_id=1001;
+
+--delete query for fake oil company from refinary_clients
+
+delete from refinery_clients where sale_id=1007;
+
+--change the table name using alter command
+
+alter table distribution_channels
+rename to dis_channels;
+
+select * from dis_channels;
+
+--add a column location
+
+alter table dis_channels
+add location text null;
+
+--we have to set the value in location by or operand 
+
+update dis_channels
+set location='County A'
+where sale_id=1001 or
+sale_id=1003 or sale_id=1004 or sale_id=1006;
+
+update dis_channels
+set location='County B'
+where sale_id=1002 or
+sale_id=1005;
+
+
+
+Day-3
+
+select * from dis_channels;
+select * from refinery_clients;
+
+
+--print the dist_name with the status_received
+select dis_name,status_received 
+from dis_channels;
+
+
+--Distinct keyword will help to show the data only one time
+
+select distinct dis_name from dis_channels;
+
+
+--see refiner_name,unit_sold where unit_sold is greater than 10,000
+
+select refiner_name,units_sold
+from refinery_clients
+where units_sold>10000 ;
+
+
+--print the dis_name nd sale_id of 1001 and 1003
+
+select dis_name,sale_id
+from dis_channels
+where sale_id in(1001,1003);
+
+--OR
+select dis_name,sale_id
+from dis_channels
+where sale_id=1001 or sale_id=1003;
+
+--printing in order by asc/desc
+
+select refiner_name,units_sold
+from refinery_clients
+order by units_sold asc;
+
+--group by our county a and county b
+
+select dis_name,location
+from dis_channels
+group by location,dis_name
+order by location;
+
+--join(inner join)
+--we want dis_name and the units_sold
+
+select dis_channels.dis_name,
+refinery_clients.units_sold
+from dis_channels
+inner join refinery_clients on
+dis_channels.sale_id=refinery_clients.sale_id;
+
+Day-4
+
+select * from dis_channels;
+select * from refinery_clients;
+
+--count the number of dis_name are there in the dis_channels table
+--count()->function
+ select count(dis_name)
+ from dis_channels;
+ 
+ --avg()->function
+ select avg(units_sold)
+ from refinery_clients;
+ 
+ --sum()->function
+ select sum(units_sold)
+ from refinery_clients;
+ 
+ --find sum() of only those units_sold where status is true
+  select sum(units_sold)
+ from refinery_clients
+ where status_sent='true';
+ 
+ --min() ->function
+  select min(units_sold)
+ from refinery_clients;
+ --max() ->function
+  select max(units_sold)
+ from refinery_clients;
+
+Day-5
+
+--Wildcard in sql
+select * from dis_channels;
+
+/*
+%i->name ends with i
+i%->name starts with i
+%i%->names having i in between
+_i->second letter should be i
+_i%->does not end with i
+*/
+select dis_name from dis_channels where dis_name like '%i%';
+
+
+Day-6
+
+select * from dis_channels;
+select * from refinery_clients;
+
+--Data types, value constraints and operators
+
+/*
+Data type-
+1.string
+--text,char(size),[varchar(size)-alphanumeric]
+2.numeric
+--int,bool->(true,false),money->($4000)
+3.date/time
+--date(y-m-d),time(h-m-s)
+*/
+
+/*
+Value constraints-
+1.NULL
+2.NOT NULL
+3.unique->can't have multiple value
+4.primary key
+5.foreign key
+*/
+
+/*
+Operators-
+1.<,>,=,<=,>=
+2.and,or,not
+3.+,-,*,/,%,^
+*/
+
+
+
+
+
+
+
+
+
